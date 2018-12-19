@@ -18,6 +18,7 @@ calibrateRepeating :: Int     -- ^ Starting frequency
 calibrateRepeating freq = findRepeated [freq] . cycle . allFreqChanges
 
 -- | Apply changes to list of previous frequencies until a value is repeated
+-- | This is pretty slow, should probably switch the previous frequencies to a map or set
 findRepeated :: [Int]           -- ^ Previous frequencies visited
              -> [(Int -> Int)]  -- ^ List of changes to apply to frequencies
              -> Int             -- ^ First frequency that was repeated

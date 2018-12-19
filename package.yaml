@@ -21,6 +21,8 @@ description: Please see the README on GitHub at <https://github.com/wszamotula/a
 
 dependencies:
 - base >= 4.7 && < 5
+- tasty
+- tasty-hunit
 
 library:
   source-dirs: src
@@ -46,3 +48,5 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - advent-of-code
+    - tasty
+    - tasty-hunit

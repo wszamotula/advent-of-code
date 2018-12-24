@@ -23,6 +23,8 @@ dependencies:
 - base >= 4.7 && < 5
 - tasty
 - tasty-hunit
+- unordered-containers
+- mtl
 
 library:
   source-dirs: src
@@ -37,6 +39,8 @@ executables:
     - -with-rtsopts=-N
     dependencies:
     - advent-of-code
+    - unordered-containers
+    - mtl
 
 tests:
   advent-of-code-test:
@@ -50,3 +54,5 @@ tests:
     - advent-of-code
     - tasty
     - tasty-hunit
+    - unordered-containers
+    - mtl

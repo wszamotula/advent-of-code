@@ -1,8 +1,8 @@
 import Test.Tasty
 import Test.Tasty.HUnit
 
-import Year2018.Day1.ChronCalTest as Day1
-import Year2018.Day2.InventoryMgmtTest as Day2
+import Year2018.Day3.SliceItTest as Day3
 
 main :: IO ()
-main = defaultMain $ testGroup "tests" [Day2.tests]
+main = defaultMain $ testGroup "tests" [Day3.tests]
+

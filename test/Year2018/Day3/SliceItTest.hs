@@ -6,7 +6,7 @@ import Test.Tasty.HUnit
 import Year2018.Day3.SliceIt
 
 tests :: TestTree
-tests = testGroup "Day 2 tests" [testOverlappedClaims, testClaimWithoutOverlap]
+tests = testGroup "Day 3 tests" [testOverlappedClaims, testClaimWithoutOverlap]
 
 testOverlappedClaims :: TestTree
 testOverlappedClaims = testCase "Overlapped claims for sample input" $

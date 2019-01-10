@@ -30,7 +30,7 @@ strategy2 input = let naps = napsForGuards 0 $ parseAllLogEvents input
                       (guard, min) = mostFreqSleepingGuard $ allSleepiestGuardMinutes $ naps
                   in  guard * min
 
--- | For a sorted list of events generate the naps for all the guards documented in those events, guard 0 indicates start
+-- | Generate the naps for all the guards documented in those events, use guard ID 0 to start the recursive process
 napsForGuards :: Guard -> [Event] -> [Nap]
 napsForGuards _ []                 = []
 napsForGuards 0 events             = let (start:sortedEvents) = sortBy (compare `on` dateTime) events
@@ -52,8 +52,8 @@ sleepiestGuardMinute naps = let napLength nap = endMin nap - startMin nap + 1
 
 -- | Get the minute each guard slept the most and how much they slept at that minute
 allSleepiestGuardMinutes :: [Nap] -> [(Guard, Minute, Int)]
-allSleepiestGuardMinutes naps = foldl (\res naps -> gaurdMin naps : res) [] $ groupGuardNaps naps
-                    where gaurdMin naps = (napGuard $ head naps, fst $ sleepiestMinute naps, snd $ sleepiestMinute naps)
+allSleepiestGuardMinutes naps = foldl (\res naps -> guardMin naps : res) [] $ groupGuardNaps naps
+                    where guardMin naps = (napGuard $ head naps, fst $ sleepiestMinute naps, snd $ sleepiestMinute naps)
 
 -- | Group a list of naps by guard
 groupGuardNaps :: [Nap] -> [[Nap]]
@@ -61,7 +61,7 @@ groupGuardNaps naps = groupBy ((==) `on` napGuard) $ sortBy (compare `on` napGua
 
 -- | Get the guard that slept the most at their most slept minute
 mostFreqSleepingGuard :: [(Guard, Minute, Int)] -> (Guard, Minute)
-mostFreqSleepingGuard gMins = let (guard, min, _) = maximumBy (compare `on` (\(_, _, amt) -> amt)) gMins
+mostFreqSleepingGuard guardNapMins = let (guard, min, _) = maximumBy (compare `on` (\(_, _, amt) -> amt)) guardNapMins
                               in (guard, min)
 
 -- | Find the minute that was most slept from a list of naps and how long they slept at that minute
@@ -72,6 +72,7 @@ sleepiestMinute naps = let napMinutes nap = [(startMin nap)..(endMin nap)]
                        in  Map.foldlWithKey' updateTopMin (0,0) minMap
 
 -- | Update a map from napMin -> napAmt given a list of additional minutes spent sleeping
+-- | Maybe could have been done with a flip on partial alter function, then applied with <$> to minutes
 updateNapMinMap :: Map.HashMap Minute Int -> [Minute] -> Map.HashMap Minute Int
 updateNapMinMap map []         = map
 updateNapMinMap map (min:mins) = updateNapMinMap (Map.alter addOrIncrement min map) mins
